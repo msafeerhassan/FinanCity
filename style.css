@@ -1,0 +1,15 @@
+div[data-placeholder]:empty::before{
+    content: attr(data-placeholder);
+    color: black;
+    cursor: text;
+}
+
+.flexContainer {
+    display: flex;
+    gap: 20px;
+}
+
+.column {
+    flex: 1;
+    padding: 10px
+}
