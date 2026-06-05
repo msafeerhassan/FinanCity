@@ -1,6 +1,65 @@
+body {
+    background-color:beige;
+    color:black;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#main {
+    text-align: center;
+    font-size: xx-large;
+    color: darkcyan;
+}
+
+.column {
+    text-align: center;
+}
+
+h2 {
+    font-size: 25px;
+}
+
+.rightColumn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* justify-content: center; */
+}
+
+#totalExpensesLabel, #totalIncomeLabel, #netBalanceLabel {
+    font-weight: bolder;
+    padding-right: 5px;
+    font-size: x-large;
+}
+
+#totalExpenses, #totalIncome, #netBalance {
+    font-size: 25px;
+    color: white;
+}
+
+#totalExpenses {
+    padding-right: 60px;
+}
+
+#totalExpensesLabel {
+    padding-left: 60px;
+}
+
+#netOverview{
+    border: none;
+    border-radius: 5px;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    background: darkcyan;
+    color: white;
+}
+
 div[data-placeholder]:empty::before{
     content: attr(data-placeholder);
-    color: black;
     cursor: text;
 }
 
@@ -12,4 +71,171 @@ div[data-placeholder]:empty::before{
 .column {
     flex: 1;
     padding: 10px
+}
+
+.newTransactionForm {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    display: inline-block;
+    text-align: left;
+    width: 80%;
+    max-width: 400px;
+}
+
+.newTransactionForm label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #333
+}
+
+.newTransactionForm input[type="text"],.newTransactionForm input[type="number"],.newTransactionForm input[type="date"],.newTransactionForm select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.newTransactionForm button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: darkcyan;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.newTransactionForm button[type="submit"]:hover {
+    background-color: #006666;
+}
+
+#historyTable {
+    width: 90%;
+    max-width: 600px;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0px 4px 6px rgba(0,0,0,0.05);
+}
+
+#historyTable th {
+    background-color: darkcyan;
+    color: white;
+    padding: 12px 15px;
+    font-weight: 600;
+    text-align: left;
+}
+
+#historyTable td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #f0f0f0;
+    text-align: left;
+}
+
+
+#historyTable tr:nth-child(even){
+    background-color: #f9fbfb;
+}
+
+#historyTable tr:hover:not(#historyTableHeader){
+    background-color: #f1f7f7;
+}
+
+@media screen and (max-width: 768px) {
+    #netOverview {
+        flex-direction: column;
+        height: auto;
+        padding: 15px 0;
+        gap: 10px;
+    }
+    #totalExpenses, #totalExpensesLabel {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+    .flexContainer {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .column {
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .newTransactionForm, #historyTable {
+        width: 100%;
+        max-width: 100%;
+    }
+    footer {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+    }
+    footer nav {
+        justify-content: center;
+        gap: 10px;
+    }
+}
+
+
+@media screen and (max-width: 480px) {
+    #main {
+        font-size: x-large;
+        padding: 0 10px;
+    }
+    #historyTable th, #historyTable td {
+        padding: 8px 6px;
+        font-size: 13px;
+    }
+}
+
+footer {
+    background-color: darkcyan;
+    color: white;
+    padding: 20px 40px;
+    margin-top: 40px;
+    border-radius: 8px 8px 0 0;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.creditsPara {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+footer nav {
+    display: flex;
+    gap: 20px;
+}
+
+footer nav a {
+    color: #e6f7f7;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+footer nav a:hover {
+    color: darkcyan;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
