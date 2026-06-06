@@ -37,6 +37,7 @@
             name="title"
             id="transactionTitle"
             placeholder="Salary"
+            required
           />
           <label for="amount">Amount:</label>
           <input
@@ -46,9 +47,10 @@
             min="0"
             step="0.1"
             placeholder="50000"
+            required
           />
           <label for="type">Transaction Type: </label>
-          <select name="type" id="transactionType">
+          <select name="type" id="transactionType" required>
             <option value="expense">Expense</option>
             <option value="income">Income</option>
           </select>
@@ -59,6 +61,7 @@
             name="date"
             id="transactionDate"
             placeholder="06/02/2026"
+            required
           />
           <button type="submit">Add</button>
         </form>
@@ -72,6 +75,7 @@
             <th>Title</th>
             <th>Amount</th>
             <th>Type</th>
+            <th>Action</th>
           </tr>
           </thead>
           <tbody id="historyBody">
@@ -80,48 +84,56 @@
             <td class="title">Salary</td>
             <td class="amount">20000</td>
             <td class="type">Income</td>
+            <td class="action"><button class="editButton">Edit</button></td>
           </tr>
           <tr>
             <td class="date">02/06/2026</td>
             <td class="title">Electricity Bill</td>
             <td class="amount">1000</td>
             <td class="type">Expense</td>
+            <td class="action"><button class="editButton">Edit</button></td>
           </tr>
           <tr>
             <td class="date">03/06/2026</td>
             <td class="title">Gas Bill</td>
             <td class="amount">1000</td>
             <td class="type">Expense</td>
+            <td class="action"><button class="editButton">Edit</button></td>
           </tr>
           <tr>
             <td class="date">04/06/2026</td>
             <td class="title">Investment Return</td>
             <td class="amount">5000</td>
             <td class="type">Income</td>
+            <td class="action"><button class="editButton">Edit</button></td>
           </tr>
           <tr>
             <td class="date">05/06/2026</td>
             <td class="title">Loan Payment</td>
             <td class="amount">10000</td>
             <td class="type">Expense</td>
+            <td class="action"><button class="editButton">Edit</button></td>
           </tr>
           <tr>
             <td class="date">06/06/2026</td>
             <td class="title">Grocery Shopping</td>
             <td class="amount">5000</td>
             <td class="type">Expense</td>
+            <td class="action"><button class="editButton">Edit</button></td>
           </tr>
           <tr>
             <td class="date">07/06/2026</td>
             <td class="title">Loan Intake</td>
             <td class="amount">10000</td>
             <td class="type">Income</td>
+            <td class="action"><button class="editButton">Edit</button></td>
           </tr>
           <tr>
             <td class="date">08/06/2026</td>
             <td class="title">School Fee</td>
             <td class="amount">3000</td>
             <td class="type">Expense</td>
+            <td class="action"><button class="editButton">Edit</button></td>
           </tr>
           </tbody>
         </table>
