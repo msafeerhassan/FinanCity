@@ -1,6 +1,6 @@
 // const { act } = require("react");
 
-let transactionsDatabase = [];
+let transactionsDatabase = JSON.parse(localStorage.getItem("transactionsDatabase")) || [];
 
 // let sampleTransaction = {
 //     id: "unique timestamp based id",
@@ -9,6 +9,14 @@ let transactionsDatabase = [];
 //     type: "income or expense",
 //     date: "iso format date"
 // }
+
+let currentPage = 1;
+const recordsPerPage = 6;
+
+function saveToLocalStorage() {
+    localStorage.setItem("transactionsDatabase", JSON.stringify(transactionsDatabase));
+
+}
 
 function addTransaction(title, amount, type, date) {
     let idString = "trans" + Date.now();
@@ -21,7 +29,7 @@ function addTransaction(title, amount, type, date) {
     };
 
     transactionsDatabase.push(newTransaction);
-
+    saveToLocalStorage();
 }
 
 // addTransaction("Electricity Bill Payment", 1200.00, "Expense", "2026-06-05");
@@ -32,6 +40,7 @@ function delTransactionbyID(idRequired) {
         if(transactionsDatabase[i].id == idRequired) {
             transactionsDatabase.splice(i, 1)
             console.log(`Transaction with ID: ${idRequired} has been removed successfully!`)
+            saveToLocalStorage()
         }
         else {
             console.log("Transaction ID search ongoing...")
@@ -53,8 +62,89 @@ function getAllTransactions(){
 
 const addTransactionForm = document.getElementById("newTransactionForm");
 const historyTableBody = document.getElementById("historyBody");
+const paginationControl = document.getElementById("paginationControl");
 
-let isFirstTransactionEntry = true;
+let isFirstTransactionEntry = transactionsDatabase.length === 0;
+
+function renderCurrentPage() {
+    historyTableBody.innerHTML = "";
+
+    if (transactionsDatabase.length === 0) {
+        paginationControl.innerHTML = "";
+        recalculateTotals();
+        return ;
+    }
+
+    const totalPages = Math.ceil(transactionsDatabase.length / recordsPerPage);
+
+    if (currentPage > totalPages) currentPage = totalPages || 1;
+
+    const reverseData = [...transactionsDatabase].reverse();
+    const startIndex = (currentPage - 1) * recordsPerPage;
+    const endIndex = startIndex + recordsPerPage;
+    const paginatedItems = reverseData.slice(startIndex, endIndex);
+
+    paginatedItems.forEach((trans) => {
+        const formattedType = trans.type.charAt(0).toUpperCase() + trans.type.slice(1);
+        const formattedTitle = trans.title.charAt(0).toUpperCase() + trans.title.slice(1);
+
+        let formattedDate = trans.date;
+        if (trans.date && trans.date.includes("-")) {
+            const [year, month, day] = trans.date.split("-");
+            formattedDate = `${day}/${month}/${year}`;
+        }
+
+        const newRow = document.createElement("tr");
+
+        newRow.dataset.id = trans.id
+
+        newRow.innerHTML = `<td class="date">${formattedDate}</td>
+            <td class="title">${formattedTitle}</td>
+            <td class="amount">${trans.amount}</td>
+            <td class="type">${formattedType}</td>
+            <td class="action"><button class="editButton">Edit</button></td>`;
+
+        historyTableBody.appendChild(newRow)
+    });
+
+    renderPaginationButton(totalPages);
+    recalculateTotals();
+}
+
+function renderPaginationButton(totalPages) {
+    paginationControl.innerHTML = "";
+    if (totalPages <= 1) return;
+
+    const prevBtn = document.createElement("button");
+    prevBtn.innerText = "<< Previous";
+    prevBtn.disabled = currentPage === 1;
+    prevBtn.addEventListener("click", ()=> {
+        currentPage--;
+        renderCurrentPage();
+    });
+    paginationControl.appendChild(prevBtn);
+
+    for (let i = 1; i <= totalPages; i++) {
+        const pageBtn = document.createElement("button");
+        pageBtn.innerText = i;
+
+        if(i === currentPage) pageBtn.classList.add("activePage");
+        pageBtn.addEventListener("click", ()=>{
+            currentPage = i;
+            renderCurrentPage();
+        });
+        paginationControl.appendChild(pageBtn);
+    }
+
+    const nextBtn = document.createElement("button");
+    nextBtn.innerText = "Next >>";
+    nextBtn.disabled = currentPage === totalPages;
+    nextBtn.addEventListener("click", () => {
+        currentPage++;
+        renderCurrentPage();
+    });
+    paginationControl.appendChild(nextBtn);
+}
 
 addTransactionForm.addEventListener("submit", function(event){
     event.preventDefault();
@@ -86,48 +176,9 @@ addTransactionForm.addEventListener("submit", function(event){
 
     addTransaction(transactionTitle, transactionAmount, transactionType, transactionDate);
 
-    const formattedType = transactionType.charAt(0).toUpperCase() + transactionType.slice(1);
-
-    const formattedTitle = transactionTitle.charAt(0).toUpperCase() + transactionTitle.slice(1);
-
-    let formattedDate = transactionDate;
-
-    if (transactionDate) {
-        const [year, month, day] = transactionDate.split("-");
-        formattedDate = `${day}/${month}/${year}`;
-    }
-    const newRow = document.createElement("tr");
-
-    newRow.innerHTML = `<td class="date">${formattedDate}</td>
-            <td class="title">${formattedTitle}</td>
-            <td class="amount">${transactionAmount}</td>
-            <td class="type">${formattedType}</td>
-            <td class="action"><button class="editButton">Edit</button></td>`;
-    
-    historyTableBody.insertBefore(newRow, historyTableBody.firstChild);
-    if (historyTableBody.children.length > 6) {
-        historyTableBody.removeChild(historyTableBody.lastChild);
-    }
-
-    let currentIncome = 0;
-    let currentExpense = 0;
-
-    transactionsDatabase.forEach(trans => {
-        if (trans.type === "income") currentIncome += trans.amount;
-        if (trans.type === "expense") currentExpense += trans.amount;
-    });
-
-    let currentBalance = currentIncome - currentExpense;
-    let balanceSign = currentBalance >= 0 ? "+" : "";
-
-    totalIncomeField = document.getElementById("totalIncome");
-    totalExpensesField = document.getElementById("totalExpenses");
-    netBalanceField = document.getElementById("netBalance");
-
-    totalIncomeField.innerText = `${currentIncome} PKR`;
-    totalExpensesField.innerText = `${currentExpense} PKR`;
-    netBalanceField.innerText = `${balanceSign}${currentBalance} PKR`;
-
+    currentPage = 1;
+    renderCurrentPage();
+    addTransactionForm.reset();
 })
 
 const editButton = document.getElementsByClassName("editButton")
@@ -138,7 +189,7 @@ historyTableBody.addEventListener("click", function(event) {
     if (target.classList.contains("editButton")) {
         const editButton = event.target;
         const row = editButton.closest("tr");
-
+        const transactionID = row.dataset.id;
         const dateCell = row.querySelector(".date");
         const titleCell = row.querySelector(".title");
         const amountCell = row.querySelector(".amount");
@@ -184,63 +235,42 @@ historyTableBody.addEventListener("click", function(event) {
             const newAmount = row.querySelector(".editAmount").value;
             const newType = row.querySelector(".editType").value;
 
-            let formattedDate = "";
-            if (newRawDate) {
-                const [year, month, date] = newRawDate.split("-");
-                formattedDate = `${date}/${month}/${year}`;
-            }
-
-            dateCell.innerText = formattedDate;
-            titleCell.innerText = newTitle.charAt(0).toUpperCase() + newTitle.slice(1);
-            amountCell.innerText = newAmount;
-            typeCell.innerText = newType;
-
-            const rowIndex = Array.from(historyTableBody.children).indexOf(row);
-
-            if (transactionsDatabase[rowIndex]) {
-                transactionsDatabase[rowIndex].title = newTitle;
-                transactionsDatabase[rowIndex].amount = Number(newAmount);
-                transactionsDatabase[rowIndex].type = newType.toLowerCase();
-                transactionsDatabase[rowIndex].date = newRawDate;
+            const targetTransaction = transactionsDatabase.find(t => t.id === transactionID);
+            if (targetTransaction){
+                targetTransaction.title = newTitle;
+                targetTransaction.amount = Number(newAmount);
+                targetTransaction.type = newType.toLowerCase();
+                targetTransaction.date = newRawDate;
+                saveToLocalStorage();
             }
 
             editButton.innerText = "Edit";
             const delButton = actionCell.querySelector(".delButton");
             if (delButton) delButton.remove();
 
-            recalculateTotals();
+            renderCurrentPage();
         }
     }
 
-    if (event.target.classList.contains("delButton")) {
+    if (event.target.classList.contains("delButton")){
         const row = event.target.closest("tr");
-        const rowIndex = Array.from(historyTableBody.children).indexOf(row);
+        const transactionId = row.dataset.id;
 
-        if (rowIndex > -1) {
-            transactionsDatabase.splice(rowIndex, 1);
-        }
-
-        row.remove();
-
-        recalculateTotals();
+        transactionsDatabase = transactionsDatabase.filter(t => t.id !== transactionId);
+        saveToLocalStorage();
+        renderCurrentPage();
     }
 })
-
 function recalculateTotals() {
     let incomeSum = 0;
     let expenseSum = 0;
 
-    const rows = historyTableBody.querySelectorAll("tr");
-
-    rows.forEach(row => {
-        const amount = Number(row.querySelector(".amount").innerText) || 0;
-        const type = row.querySelector(".type").innerText.toLowerCase();
-
-        if (type === "income") {
-            incomeSum += amount;
+    transactionsDatabase.forEach(trans => {
+        if(trans.type === "income") {
+            incomeSum += trans.amount;
         }
-        else if (type === "expense") {
-            expenseSum += amount;
+        else if (trans.type === "expense"){
+            expenseSum += trans.amount;
         }
     });
 
@@ -253,3 +283,48 @@ function recalculateTotals() {
 }
 
 // getAllTransactions()
+
+document.getElementById("exportJSONBtn").addEventListener("click", function () {
+    if (transactionsDatabase.length === 0) {
+        alert("No transaction record to export!");
+        return;
+    }
+
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(transactionsDatabase, null, 2));
+    const downloadIcon = document.createElement('a');
+    downloadIcon.setAttribute("href", dataStr)
+    downloadIcon.setAttribute("download", "FinanCityBackup.json");
+    document.body.appendChild(downloadIcon);
+    downloadIcon.click();
+    downloadIcon.remove();
+})
+
+document.getElementById("importJSONFile").addEventListener("change", function(event) {
+    const fileReader = new FileReader();
+    let targetFile = event.target.files[0];
+
+    if (!targetFile) return;
+
+    fileReader.onload = function(e) {
+        try {
+            const parsedData = JSON.parse(e.target.result);
+            if (Array.isArray(parsedData)){
+                transactionsDatabase = parsedData;
+                saveToLocalStorage();
+                currentPage = 1;
+                renderCurrentPage();
+                alert("Backup Loaded Successfully!");
+            }
+            else {
+                alert("Invalid Data Structure within JSON File.");
+            }
+        }
+        catch(err) {
+            alert("Error Parsing File!")
+        }
+    };
+    fileReader.readAsText(targetFile);
+    event.target.value = "";
+})
+
+renderCurrentPage();

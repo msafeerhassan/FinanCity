@@ -65,6 +65,13 @@
           />
           <button type="submit">Add</button>
         </form>
+
+        <div id="backupSection">
+          <h3>Backup & Restore</h3>
+          <button id="exportJSONBtn">Export JSON Backup</button>
+          <label for="importJSONFile" id="importLabel">Import Backup File</label>
+          <input type="file" id="importJSONFile" accept=".json" style="display: none;">
+        </div>
       </div>
       <div class="column rightColumn">
         <h2>Transactions History</h2>
@@ -79,64 +86,9 @@
           </tr>
           </thead>
           <tbody id="historyBody">
-          <tr>
-            <td class="date">01/06/2026</td>
-            <td class="title">Salary</td>
-            <td class="amount">20000</td>
-            <td class="type">Income</td>
-            <td class="action"><button class="editButton">Edit</button></td>
-          </tr>
-          <tr>
-            <td class="date">02/06/2026</td>
-            <td class="title">Electricity Bill</td>
-            <td class="amount">1000</td>
-            <td class="type">Expense</td>
-            <td class="action"><button class="editButton">Edit</button></td>
-          </tr>
-          <tr>
-            <td class="date">03/06/2026</td>
-            <td class="title">Gas Bill</td>
-            <td class="amount">1000</td>
-            <td class="type">Expense</td>
-            <td class="action"><button class="editButton">Edit</button></td>
-          </tr>
-          <tr>
-            <td class="date">04/06/2026</td>
-            <td class="title">Investment Return</td>
-            <td class="amount">5000</td>
-            <td class="type">Income</td>
-            <td class="action"><button class="editButton">Edit</button></td>
-          </tr>
-          <tr>
-            <td class="date">05/06/2026</td>
-            <td class="title">Loan Payment</td>
-            <td class="amount">10000</td>
-            <td class="type">Expense</td>
-            <td class="action"><button class="editButton">Edit</button></td>
-          </tr>
-          <tr>
-            <td class="date">06/06/2026</td>
-            <td class="title">Grocery Shopping</td>
-            <td class="amount">5000</td>
-            <td class="type">Expense</td>
-            <td class="action"><button class="editButton">Edit</button></td>
-          </tr>
-          <tr>
-            <td class="date">07/06/2026</td>
-            <td class="title">Loan Intake</td>
-            <td class="amount">10000</td>
-            <td class="type">Income</td>
-            <td class="action"><button class="editButton">Edit</button></td>
-          </tr>
-          <tr>
-            <td class="date">08/06/2026</td>
-            <td class="title">School Fee</td>
-            <td class="amount">3000</td>
-            <td class="type">Expense</td>
-            <td class="action"><button class="editButton">Edit</button></td>
-          </tr>
           </tbody>
         </table>
+        <div id="paginationControl"></div>
       </div>
     </div>
     <footer>

@@ -126,21 +126,27 @@ div[data-placeholder]:empty::before{
     background-color: white;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0px 4px 6px rgba(0,0,0,0.05);
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.08);
+    margin-top: 15px;
 }
 
 #historyTable th {
     background-color: darkcyan;
     color: white;
-    padding: 12px 15px;
+    padding: 14px 16px;
     font-weight: 600;
     text-align: left;
+    font-size: 15px;
+    letter-spacing: 0.5px;
 }
 
 #historyTable td {
-    padding: 12px 15px;
-    border-bottom: 1px solid #f0f0f0;
+    padding: 12px 16px;
+    border-bottom: 1px solid #f0f4f4;
     text-align: left;
+    font-size: 14px;
+    color: #333;
+    vertical-align: middle;
 }
 
 
@@ -151,6 +157,67 @@ div[data-placeholder]:empty::before{
 #historyTable tr:hover:not(#historyTableHeader){
     background-color: #f1f7f7;
 }
+
+#historyTable td.action {
+    text-align: center;
+    white-space: nowrap;
+    width: 130px;
+}
+
+.editButton, .delButton {
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    display: inline-block;
+    vertical-align: middle;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.editButton {
+    background-color: #e6f7f7;
+    color: darkcyan;
+    border: 1px solid #b2e3e3;
+}
+
+.editButton:hover {
+    background-color: darkcyan;
+    color: white;
+    border-color: darkcyan;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#historyTable td input, #historyTable td select {
+    padding: 5px 8px;
+    border: 1px solid darkcyan;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 13px;
+    box-sizing: border-box;
+    background-color: #fbfdfd;
+}
+
+#historyTable td input:focus, #historyTable td select:focus {
+    outline: 2px solid #b2e3e3;
+}
+
+
+.delButton {
+    margin-left: 4px !important;
+}
+
+.delButton:hover {
+    background-color: #b31434 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+
 
 @media screen and (max-width: 768px) {
     #netOverview {
@@ -196,6 +263,13 @@ div[data-placeholder]:empty::before{
         padding: 8px 6px;
         font-size: 13px;
     }
+    .editButton, .delButton{
+        padding: 4px 8px;
+        font-size: 11px;
+    }
+    #historyTable td.action {
+        width: 100px;
+    }
 }
 
 footer {
@@ -238,4 +312,100 @@ footer nav a:hover {
     color: darkcyan;
     background-color: white;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#backupSection {
+    margin-top: 30px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.05);
+    display: inline-block;
+    text-align: left;
+    width: 80%;
+    max-width: 400px;
+    box-sizing: border-box;
+}
+
+#backupSection h3 {
+    margin-top: 0;
+    color: darkcyan;
+    font-size: 18px;
+}
+
+#exportJSONBtn, #importLabel {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    box-sizing: border-box;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+#exportJSONBtn {
+    background-color: darkcyan;
+    color: white;
+    border: none;
+}
+
+#exportJSONBtn:hover{
+    background-color: #006666;
+}
+
+#importLabel {
+    background-color: #f0f7f7;
+    color: darkcyan;
+    border: 1px solid darkcyan;
+}
+
+#importLabel:hover{
+    background-color: darkcyan;
+    color: white;
+}
+
+#paginationControl {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+#paginationControl button {
+    padding: 6px 14px;
+    border: 1px solid #dcdcdc;
+    background-color: white;
+    color: #444;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 13px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+#paginationControl button:hover:not(:disabled) {
+    background-color: #e6f7f7;
+    border-color: darkcyan;
+    color: darkcyan;
+}
+
+#paginationControl button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    background-color: #f5f5f5;
+    border-color: #e0e0e0;
+}
+
+#paginationControl button.activePage {
+    background-color: darkcyan;
+    color: white;
+    border-color: darkcyan;
+    box-shadow: 0 2px 6px rgba(0, 139, 139, 0.3);
 }
