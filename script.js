@@ -9,13 +9,11 @@ let transactionsDatabase = [];
 // }
 
 function addTransaction(title, amount, type, date) {
-    // const todayISODate = new Date().toISOString().split('T')[0];
     let idString = "trans" + Date.now();
-    // console.log(idString);
     let newTransaction = {
         id: idString,
         title: title,
-        amount: amount,
+        amount: Number(amount),
         type: type,
         date: date,
     };
@@ -24,8 +22,8 @@ function addTransaction(title, amount, type, date) {
 
 }
 
-addTransaction("Electricity Bill Payment", 1200.00, "Expense", "2026-06-05");
-addTransaction("Freelance Website Designing", 20000.00, "Income", "2026-03-05");
+// addTransaction("Electricity Bill Payment", 1200.00, "Expense", "2026-06-05");
+// addTransaction("Freelance Website Designing", 20000.00, "Income", "2026-03-05");
 
 function delTransactionbyID(idRequired) {
     for (let i = 0; i < transactionsDatabase.length; i++) {
@@ -39,8 +37,6 @@ function delTransactionbyID(idRequired) {
     };
 }
 
-// delTransactionbyID(transactionsDatabase[1].id)
-
 function getAllTransactions(){
     for (let i = 0; i < transactionsDatabase.length; i++) {
         console.log(`Transaction ${i+1}
@@ -53,5 +49,29 @@ function getAllTransactions(){
     }
 }
 
+const addTransactionForm = document.getElementById("newTransactionForm")
 
-getAllTransactions()
+addTransactionForm.addEventListener("submit", function(event){
+    event.preventDefault();
+
+    const formData = new FormData(addTransactionForm);
+
+    const  transactionTitle = formData.get('title');
+
+    const  transactionAmount = formData.get('amount');
+
+    const  transactionType = formData.get('type');
+
+    const  transactionDate = formData.get('date');
+
+    // console.log(`Transaction Title :${transactionTitle}
+    //     Transaction Amount: ${transactionAmount}
+    //     Transaction Type: ${transactionType}
+    //     Transaction Date: ${transactionDate}`)
+
+    addTransaction(transactionTitle, transactionAmount, transactionType, transactionDate)
+
+    getAllTransactions()
+})
+
+// getAllTransactions()

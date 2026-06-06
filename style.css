@@ -73,7 +73,7 @@ div[data-placeholder]:empty::before{
     padding: 10px
 }
 
-.newTransactionForm {
+#newTransactionForm {
     background-color: white;
     padding: 30px;
     border-radius: 8px;
@@ -84,14 +84,14 @@ div[data-placeholder]:empty::before{
     max-width: 400px;
 }
 
-.newTransactionForm label {
+#newTransactionForm label {
     display: block;
     font-weight: 600;
     margin-bottom: 8px;
     color: #333
 }
 
-.newTransactionForm input[type="text"],.newTransactionForm input[type="number"],.newTransactionForm input[type="date"],.newTransactionForm select {
+#newTransactionForm input[type="text"],#newTransactionForm input[type="number"],#newTransactionForm input[type="date"],#newTransactionForm select {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
@@ -102,7 +102,7 @@ div[data-placeholder]:empty::before{
     box-sizing: border-box;
 }
 
-.newTransactionForm button[type="submit"] {
+#newTransactionForm button[type="submit"] {
     width: 100%;
     padding: 12px;
     background-color: darkcyan;
@@ -115,7 +115,7 @@ div[data-placeholder]:empty::before{
     transition: background-color 0.2s ease;
 }
 
-.newTransactionForm button[type="submit"]:hover {
+#newTransactionForm button[type="submit"]:hover {
     background-color: #006666;
 }
 
@@ -171,7 +171,7 @@ div[data-placeholder]:empty::before{
         width: 100%;
         box-sizing: border-box;
     }
-    .newTransactionForm, #historyTable {
+    #newTransactionForm, #historyTable {
         width: 100%;
         max-width: 100%;
     }
