@@ -488,19 +488,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const dataString = JSON.stringify(transactionsDatabase, null, 2);
 
     try {
-    const apiURl = "https://cors-anywhere.herokuapp.com/https://ai.hackclub.com/proxy/v1/chat/completions";
+    const apiURl = "/api/chat";
 
       const response = await fetch(
         apiURl ,
         {
           method: "POST",
           headers: {
-            Authorization: "",
             "Content-Type": "application/json",
-            "X-Requested-With": "XMLHttpRequest"
           },
           body: JSON.stringify({
-            model: "qwen/qwen3-32b",
             messages: [
             {
                 role: "system",

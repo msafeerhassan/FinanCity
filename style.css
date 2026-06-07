@@ -588,6 +588,7 @@ footer nav a:hover {
     text-align: left;
     display: inline-block;
     margin-left: 10px;
+    height: 50%;
 }
 
 #insightsHeading {
