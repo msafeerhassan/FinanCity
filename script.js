@@ -404,11 +404,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const dataString = JSON.stringify(transactionsDatabase, null, 2);
 
     try {
-      // const client = new OpenRouter({
-      //     apiKey: "sk-hc-v1-3e455ba0f4324ec9a974c4442847f63ebfe1011b686f4fda811ceebbbfcd0711",
-      //     serverURL: "https://ai.hackclub.com/proxy/v1/"
-      // });
-
     const apiURl = "https://cors-anywhere.herokuapp.com/https://ai.hackclub.com/proxy/v1/chat/completions";
 
       const response = await fetch(
