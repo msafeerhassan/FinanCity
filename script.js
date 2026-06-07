@@ -327,4 +327,132 @@ document.getElementById("importJSONFile").addEventListener("change", function(ev
     event.target.value = "";
 })
 
+document.addEventListener("DOMContentLoaded" ,() => {
+    const aiResponseDisplay = document.getElementById("aiResponseDisplay");
+    const aiCustomQueryInput = document.getElementById("aiCustomQuery");
+    const aiSubmitQueryBtn = document.getElementById("aiSubmitQueryBtn");
+
+    document.querySelectorAll(".aiActionBtn").forEach(btn => {
+        btn.addEventListener("click", ()=>{
+            const actionType = btn.getAttribute("data-query");
+            genAIResponse(actionType);
+        });
+    });
+    aiSubmitQueryBtn.addEventListener("click", processCustomAIQuery);
+    aiCustomQueryInput.addEventListener("keypress", (e) => {
+        if(e.key === "Enter") processCustomAIQuery();
+    });
+
+    function processCustomAIQuery() {
+        const queryText = aiCustomQueryInput.value.trim().toLowerCase();
+        if (!queryText) return;
+
+        if (queryText.includes("saving") || queryText.includes("rate") || queryText.includes("percent")) {
+            genAIResponse("analyze");
+        }
+        else if (queryText.includes("summary") || queryText.includes("history") || queryText.includes("list")) {
+            genAIResponse("summary");
+        }
+        else if (queryText.includes("budget") || queryText.includes("strategy") || queryText.includes("plan") || queryText.includes("advice")) {
+            genAIResponse("budget");
+        }
+        else {
+            genAIResponse("general", queryText);
+        }
+        aiCustomQueryInput.value = "";
+    }
+
+    function genAIResponse(type, customPhrase = "") {
+        if (!transactionsDatabase || transactionsDatabase.length === 0) {
+            aiResponseDisplay.innerHTML = `
+            <div class="aiResponseCard alert">
+                <strong>System Alert:</strong> Your transaction history is currently empty so can't perform analysis.
+            </div>;
+            `
+            return;
+        }
+
+        let totalIncome = 0;
+        let totalExpenses = 0;
+        const categoriesMap = {};
+        let largestExpenseTitle = "None";
+        let maxExpenseAmount = 0;
+
+        transactionsDatabase.forEach(item => {
+            const amount = Number(item.amount) || 0;
+            const formattedTitle = item.title.trim().charAt(0).toUpperCase() + item.title.trim().slice(1).toLowerCase();
+
+            if(item.type === "income") {
+                totalIncome += amount;
+            }
+            else if (item.type === "expense") {
+                totalExpenses += amount;
+
+                categoriesMap[formattedTitle] = (categoriesMap[formattedTitle] || 0) + amount;
+
+                if (amount > maxExpenseAmount) {
+                    maxExpenseAmount = amount;
+                    largestExpenseTitle = formattedTitle;
+                }
+            }
+        });
+
+        const netSavings = totalIncome - totalExpenses;
+        const savingsRate = totalIncome > 0 ? ((netSavings / totalIncome) * 100).toFixed(1) : 0;
+
+        let htmlResponse = "";
+
+        if (type === "analyze") {
+            htmlResponse = `
+            <div class="aiResponseCard">
+                <h4>Savings Rate Analysis</h4>
+                <p>Your current net savings rate is <strong>${savingsRate}%</strong> (${netSavings} PKR retained out of ${totalIncome} PKR total Income.)</p>
+                <div class="aiProgressBarContainer">
+                    <div class="aiProgressBar" style="width: ${Math.max(0, Math.min(100, savingsRate))}%"></div>
+                <p class="aiInsightText">${
+                    savingsRate >= 20 ? "Perfect - keep maintaining this cash surplus. You will have net worth equal to Elon Musk in 2030 (just kidding)" :
+                    "Caution: Your savings are not enough. Lower spendings on Claude Code Subscription (just kidding)"
+                }</p>
+            </div>`;
+        }
+        else if (type === "summary") {
+            htmlResponse = `
+            <div class="aiResponseCard">
+                <h4>Transactions History Summary</h4>
+                <ul>
+                    <li><strong>Ledger Count:</strong> Total: ${transactionsDatabase.length} records submitted.</li>
+                    <li><strong>Total Cash Inflow:</strong><span class="aiTextIncome"> ${totalIncome} PKR</span></li>
+                    <li><strong>Total Cash Outflow:</strong><span class="aiTextExpense"> ${totalExpenses} PKR</span></li>
+                    <li><strong>Highest Expense:</strong><span class="aiTextIncome">"${largestExpenseTitle}" of ${maxExpenseAmount} PKR</span></li>
+            </div>`;
+        }
+        else if(type === "budget") {
+            htmlResponse = `
+                <div class="aiResponseCard">
+                    <h4>Budget Strategy Suggestions</h4>
+                    <p>Based on your current peak expenditure for <strong>"${largestExpenseTitle}", here are three suggestions:</strong></p>
+                    <ol>
+                        <li>Implement a <strong>48-hour cool-off rule</strong> on non-essential transactions near your peak expense of ${maxExpenseAmount} PKR.
+                        </li>
+                        <li>
+                        Plan your saving target of <strong>${Math.max(1000, Math.floor(totalIncome * 0.1))} PKR</strong> directly when adding income transaction details.
+                        </li>
+                        <li>Divide income in weekly-based cash envelopes to prevent over-spending</li>
+                    </ol>
+                </div>`;
+        }
+        else {
+            htmlResponse = `
+                <div class="aiResponseCard">
+                    <h4>Custom AI-based Insights</h4>
+                    <p>Review done of query <em>"${customPhrase}"</em> keeping your transational records and history:</p>
+                    </div>
+                    <p>Currently, your overall balance changes are having <strong>${netSavings >= 0 ? 'Surplus' : 'Deficit'} of ${netSavings} PKR</strong>. Your highest single expense was at ${largestExpenseTitle} of ${maxExpenseAmount} PKR. </p>
+                </div>
+            `
+        }
+        aiResponseDisplay.innerHTML = htmlResponse;
+    }
+})
+
 renderCurrentPage();
