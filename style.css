@@ -409,3 +409,157 @@ footer nav a:hover {
     border-color: darkcyan;
     box-shadow: 0 2px 6px rgba(0, 139, 139, 0.3);
 }
+
+.aiContainer {
+    background-color: white;
+    width: 90%;
+    max-width: 1040px;
+    margin: 30px auto;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.06);
+    box-sizing: border-box;
+    text-align: left;
+}
+
+.aiContainerheading {
+    margin-top: 0;
+    margin-bottom: 5px;
+    color: darkcyan;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.aiSubheading {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #666;
+    font-size: 14px;
+}
+
+.aiResponseBox {
+    background-color: #f7fafb;
+    border: 1px dashed #b2e3e3;
+    border-radius: 6px;
+    padding: 20px;
+    min-height: 100px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+}
+
+.aiPlaceholderText {
+    color: #888;
+    font-style: italic;
+    margin: 0;
+    font-size: 14px;
+}
+
+.aiQuickActionsGrid {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.aiActionBtn {
+    background-color: #f0f7f7;
+    color: darkcyan;
+    border: 1px solid #ccebe8;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.2s ease-in-out;
+}
+
+.aiActionBtn:hover {
+    background-color: darkcyan;
+    color: white;
+    border-color: darkcyan;
+    transform: translateY(-1px);
+}
+
+.aiInputBox {
+    display: flex;
+    gap: 10px;
+}
+
+#aiCustomQuery {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+#aiCustomQuery {
+    border-color: darkcyan;
+    outline: none;
+}
+
+#aiSubmitQueryBtn {
+    background-color: darkcyan;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+
+#aiSubmitQueryBtn:hover {
+    background-color: #006666;
+}
+
+.aiResponseBox h4 {
+    margin-top: 0;
+    margin-bottom: 12px;
+    color: #111;
+    font-size: 16px;
+}
+
+.aiResponseBox p {
+    margin: 8px 0;
+    line-height: 1.5;
+    font-size: 14px;
+    color: #444;
+}
+
+.aiResponseBox ul, .aiResponseBox ol {
+    margin: 10px 0;
+    padding-left: 20px;
+    font-size: 14px;
+    color: #444;
+}
+
+.aiResponseBox li {
+    margin-bottom: 8px;
+}
+
+.aiResponseBox.alert {
+    background-color: #fff9f9;
+    border-left: 4px solid crimson;
+    color: #a31432;
+    padding: 10px;
+}
+
+@media screen and (max-width: 600px) {
+    .aiInputBox {
+        flex-direction: column;
+    }
+    #aiSubmitQueryBtn {
+        width: 100%;
+    }
+    .aiQuickActionsGrid {
+        flex-direction: column;
+    }
+    .aiActionBtn {
+        width: 100%;
+        text-align: center;
+    }
+}
