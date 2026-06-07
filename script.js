@@ -1,10 +1,94 @@
-// import { OpenRouter } from '@openrouter/sdk';
-
 let transactionsDatabase =
   JSON.parse(localStorage.getItem("transactionsDatabase")) || [];
 
 let currentPage = 1;
 const recordsPerPage = 6;
+
+document.addEventListener("DOMContentLoaded", () => {
+  const searchInput = document.getElementById("historySearchInput");
+  const filterSelect = document.getElementById("historyFilterSelect");
+
+  if (searchInput && filterSelect) {
+    const filterHandler = () => {
+      const searchTerm = searchInput.value.toLowerCase().trim();
+      const filterValue = filterSelect.value;
+
+      const rows = document.querySelectorAll("#historyBody tr");
+
+      rows.forEach(row => {
+        const title = row.querySelector(".title")?.innerText.toLowerCase() || "";
+        const type = row.querySelector(".type")?.innerText.toLowerCase() || "";
+
+        const matchesSearch = title.includes(searchTerm);
+        const matchesFilter = (filterValue === "all") || (type === filterValue);
+
+        if (matchesSearch && matchesFilter) {
+          row.style.display = "";
+        }
+        else {
+          row.style.display = "none";
+        }
+      });
+    };
+    searchInput.addEventListener("input", filterHandler);
+    filterSelect.addEventListener("change", filterHandler);
+  }
+  function runLiveDiagnostic() {
+    let income = 0;
+    let expenses = 0;
+
+    transactionsDatabase.forEach(t => {
+      if(t.type === "income") income += Number(t.amount);
+      if(t.type === "expense") expenses += Number(t.amount);
+    });
+
+    const rateMetric = document.getElementById("savingRateMetric");
+    const progressBar = document.getElementById("savingsProgressBar");
+    const healthStatus = document.getElementById("financialHealthStatus");
+
+    if(!rateMetric || !progressBar || !healthStatus) return;
+
+    if (income === 0) {
+      rateMetric.innerHTML = `Savings Rate: <strong style="color: #888">0%</strong>`;
+      progressBar.style.width = "0%";
+      healthStatus.innerText = "Add income transactions to see real-time balance metrics.";
+      return;
+    }
+
+    const savedAmount = income - expenses;
+    const savingsRate = Math.max(0, Math.round((savedAmount/income) * 100));
+
+    rateMetric.innerHTML = `Savings Rate: <strong style="color: darkcyan">${savingsRate}%</strong>`;
+    progressBar.style.width = `${Math.min(100, savingsRate)}%`;
+
+    if (savingsRate >= 50) {
+      healthStatus.innerText = "Excellent! You are saving a lot!"
+      healthStatus.style.color = "green";
+    }
+    else if (savingsRate >= 20) {
+      healthStatus.innerText = "Good! Satisfactory Savings."
+      healthStatus.style.color = "darkcyan";
+    }
+    else if (savingsRate > 0) {
+      healthStatus.innerText = "Umm... Tight Savings :("
+      healthStatus.style.color = "orange";
+    }
+    else {
+      healthStatus.innerText = "Alert: High Deficit. Reduce Expenditure!";
+      healthStatus.style.color = "crimson";
+    }
+  }
+  const originalRender = renderCurrentPage;
+  if (typeof originalRender === "function"){
+    window.renderCurrentPage = function(){
+      originalRender();
+      runLiveDiagnostic();
+    };
+
+    runLiveDiagnostic();
+  }
+})
+
 
 function saveToLocalStorage() {
   localStorage.setItem(

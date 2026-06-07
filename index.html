@@ -8,7 +8,7 @@
   </head>
   <body>
     <header>
-      <h1 id="main">FinanCity - Your Finance Assistance Dashboard</h1>
+      <h1 id="main">FinanCity - Your Personal Finance Assistants</h1>
     </header>
     <div id="netOverview">
       <label id="totalIncomeLabel">Total Income: </label>
@@ -73,7 +73,25 @@
           <input type="file" id="importJSONFile" accept=".json" style="display: none;">
         </div>
       </div>
+      <div id="insightsSection">
+        <h3 id="insightsHeading">
+          Quick Diagnostics
+        </h3>
+        <p id="savingRateMetric">Savings Rate: <strong id="savingPercent">0%</strong></p>
+        <div id="progressBarCover">
+          <div id="savingsProgressBar"></div>
+        </div>
+          <p id="financialHealthStatus"></p>
+      </div>
       <div class="column rightColumn">
+        <div id="searchFilterCover">
+          <input type="text" id="historySearchInput" placeholder="Search Transactions...">
+          <select id="historyFilterSelect">
+            <option value="all">All Types</option>
+            <option value="income">Income Only</option>
+            <option value="expense">Expense Only</option>
+          </select>
+        </div>
         <h2>Transactions History</h2>
         <table id="historyTable">
           <thead id="historyHead">
